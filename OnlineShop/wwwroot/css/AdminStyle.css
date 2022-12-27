@@ -1,0 +1,44 @@
+﻿body {
+    background-color:whitesmoke;
+    direction:rtl;
+}
+
+header{
+    background-color:navy;
+    color:white;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:10;
+    padding:5px;
+}
+
+.side-bar{
+    margin-top:80px;
+    background-color:navy;
+    border-radius:5px;
+    color:white;
+    padding:5px;
+    display:block;
+    min-height:100%;
+}
+
+    .side-bar a {
+        display: block;
+        color: white;
+        border-radius:5px;
+        padding:5px;
+        margin-top:1px;
+        transition:0.5s;
+    }
+
+    .side-bar a:hover{
+        background-color:rgb(255, 255, 255, 0.85);
+        color:navy !important;
+        
+    }
+
+    .img-preview{
+        border-radius:10px;
+    }
