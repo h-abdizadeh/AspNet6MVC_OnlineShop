@@ -1,0 +1,22 @@
+﻿@model IEnumerable<OnlineShop.Models.Group>
+
+    <div class="col-12 pt-5">
+        <div class="col-8 m-auto">
+            <h5 class="text-center">دسته بندی های دیجی کالا</h4>
+                <div class="col-12 pt-4 row">
+
+                @{
+                    foreach (var item in Model)
+                    {
+                         <!-- group -->
+                         <div class="col-4 text-center m-auto">
+                                <img src="Image/group/@item.Img" class="w-75"  alt="@item.Name">
+                                <h5 class="small">@item.Name</h5>
+                         </div>
+                    }
+                }
+
+
+                </div>
+        </div>
+    </div>
