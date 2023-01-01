@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -19,12 +19,23 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group row">
                 <label asp-for="Img" class="control-label"></label>
-                @*<input asp-for="Img" class="form-control" />*@
+                <input asp-for="Img" class="form-control" hidden />
                  <input type="file" name="imgFile" asp-for="Img" class="form-control" onchange="imgLoad(this)" />
-                <img id="img-box" src="" width="150" />
-                <img src="~/image/group/@Model.Img" width="150" />
+
+                @*new image*@
+                 <div id="img-div" class="col-6 mt-1" hidden>
+                     <label>تصویر جدید</label>
+                     <img id="img-box" src="" width="150" onload="imgDivShow()" />
+                 </div>
+
+                @*current Image*@
+                <div class="col-6 mt-1">
+                    <label>تصویر فعلی</label>
+                    <img src="~/image/group/@Model.Img" width="150" />
+                </div>
+
 
                 <span asp-validation-for="Img" class="text-danger"></span>
             </div>
@@ -74,6 +85,14 @@
             reader.readAsDataURL(input.files[0]);
 
         }
+   }
+
+   function  imgDivShow(){
+       let _imgDiv=document.getElementById("img-div");
+       _imgDiv.hidden=false;
+       _imgDiv.style.backgroundColor="yellow";
+       _imgDiv.style.borderRadius="10px";
+       _imgDiv.style.paddingBottom="3px";
    }
 
 </script>

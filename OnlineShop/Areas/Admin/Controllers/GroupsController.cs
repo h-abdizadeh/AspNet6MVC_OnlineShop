@@ -22,7 +22,7 @@ namespace OnlineShop.Areas.Admin.Controllers
         // GET: Admin/Groups
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Groups.ToListAsync());
+            return View(await _context.Groups.ToListAsync());
         }
 
         // GET: Admin/Groups/Details/5
@@ -53,11 +53,11 @@ namespace OnlineShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Group @group,IFormFile imgFile)
+        public async Task<IActionResult> Create(Group @group, IFormFile imgFile)
         {
             if (ModelState.IsValid)
             {
-                if (imgFile!=null)
+                if (imgFile != null)
                 {
                     Random r = new Random();
                     int prefix = r.Next(1000, 10000);
@@ -68,9 +68,9 @@ namespace OnlineShop.Areas.Admin.Controllers
                         Directory.CreateDirectory(imgPath);
 
                     string savePath = Path.Combine(imgPath, imgName);
-                    using(Stream imgStream=new FileStream(savePath, FileMode.Create))
+                    using (Stream imgStream = new FileStream(savePath, FileMode.Create))
                     {
-                       await imgFile.CopyToAsync(imgStream);
+                        await imgFile.CopyToAsync(imgStream);
                     }
 
                     @group.Img = imgName;
@@ -104,7 +104,7 @@ namespace OnlineShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Img,NotShow")] Group @group)
+        public async Task<IActionResult> Edit(int id, Group @group, IFormFile imgFile)
         {
             if (id != @group.Id)
             {
@@ -115,6 +115,32 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 try
                 {
+                    if (imgFile != null)
+                    {
+                        //save new image
+                        Random r = new Random();
+                        int prefix = r.Next(1000, 10000);
+                        string imgName = prefix + imgFile.FileName;
+
+                        string imgPath = Path.Combine("wwwroot/image/group/");
+                        if (!Directory.Exists(imgPath))
+                            Directory.CreateDirectory(imgPath);
+
+                        string savePath = Path.Combine(imgPath, imgName);
+                        using (Stream imgStream = new FileStream(savePath, FileMode.Create))
+                        {
+                            await imgFile.CopyToAsync(imgStream);
+                        }
+
+                        //delete old image
+                        if (System.IO.File.Exists(imgPath + group.Img))
+                        {
+                            System.IO.File.Delete(imgPath + group.Img);
+                        }
+
+                        //save new image name in database model
+                        @group.Img = imgName;
+                    }
                     _context.Update(@group);
                     await _context.SaveChangesAsync();
                 }
@@ -166,14 +192,14 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _context.Groups.Remove(@group);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GroupExists(int id)
         {
-          return _context.Groups.Any(e => e.Id == id);
+            return _context.Groups.Any(e => e.Id == id);
         }
     }
 }
