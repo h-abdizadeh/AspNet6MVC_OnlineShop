@@ -141,6 +141,7 @@ namespace OnlineShop.Areas.Admin.Controllers
                         //save new image name in database model
                         @group.Img = imgName;
                     }
+
                     _context.Update(@group);
                     await _context.SaveChangesAsync();
                 }

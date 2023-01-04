@@ -49,6 +49,7 @@ namespace OnlineShop.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Name");
+
             return View();
         }
 
