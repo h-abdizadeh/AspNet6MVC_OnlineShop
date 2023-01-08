@@ -55,6 +55,7 @@ namespace OnlineShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Group @group, IFormFile imgFile)
         {
+            //if (!string.IsNullOrEmpty(group.Name))
             if (ModelState.IsValid)
             {
                 if (imgFile != null)
@@ -191,6 +192,15 @@ namespace OnlineShop.Areas.Admin.Controllers
             var @group = await _context.Groups.FindAsync(id);
             if (@group != null)
             {
+
+                string imgPath = Path.Combine("wwwroot/image/group/");
+
+                //delete old image
+                if (System.IO.File.Exists(imgPath + group.Img))
+                {
+                    System.IO.File.Delete(imgPath + group.Img);
+                }
+
                 _context.Groups.Remove(@group);
             }
 

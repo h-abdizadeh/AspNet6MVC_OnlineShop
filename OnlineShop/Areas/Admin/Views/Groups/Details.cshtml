@@ -21,7 +21,17 @@
             @Html.DisplayNameFor(model => model.Img)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Img)
+           @* @Html.DisplayFor(model => model.Img)*@
+            @{
+                if (!string.IsNullOrEmpty(Model.Img))
+                {
+                          <img src="~/image/group/@Model.Img" width="210" />
+                }
+                else
+                {
+                            <label class="text-danger">فاقد تصویر</label>
+                }
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NotShow)
