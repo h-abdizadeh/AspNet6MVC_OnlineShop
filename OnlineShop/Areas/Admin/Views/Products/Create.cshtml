@@ -1,17 +1,16 @@
 ﻿@model OnlineShop.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "ثبت محصول";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>ثبت محصول</h1>
 
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="GroupId" class="control-label"></label>
@@ -24,41 +23,45 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input id="price-input" asp-for="Price" class="form-control" min="0" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SellOff" class="control-label"></label>
-                <input asp-for="SellOff" class="form-control" />
+                <input id="sellOff-input" asp-for="SellOff" class="form-control" value="0" min="0" max="99" oninput="SellOffPrice()" />
                 <span asp-validation-for="SellOff" class="text-danger"></span>
+
+                <label id="sellOff-price" ></label>
             </div>
             <div class="form-group">
                 <label asp-for="Img" class="control-label"></label>
-                <input asp-for="Img" class="form-control" />
+                <input type="file" name="productImg" asp-for="Img" class="form-control" onchange="imgLoad(this,'product-img')" />
                 <span asp-validation-for="Img" class="text-danger"></span>
+
+                <img id="product-img" src="" width="210" class="mt-3 rounded-3 mb-3" />
             </div>
             <div class="form-group">
                 <label asp-for="Des" class="control-label"></label>
-                <input asp-for="Des" class="form-control" />
+                <textarea asp-for="Des" class="form-control" ></textarea>
                 <span asp-validation-for="Des" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inventory" class="control-label"></label>
-                <input asp-for="Inventory" class="form-control" />
+                <input asp-for="Inventory" class="form-control" value="0" />
                 <span asp-validation-for="Inventory" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*   <div class="form-group">
                 <label asp-for="Seen" class="control-label"></label>
                 <input asp-for="Seen" class="form-control" />
                 <span asp-validation-for="Seen" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="NotShow" /> @Html.DisplayNameFor(model => model.NotShow)
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="ثبت محصول" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -68,3 +71,14 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script>
+    function SellOffPrice(){
+        let price=document.getElementById('price-input').value;
+        let sellOff=document.getElementById('sellOff-input').value;
+
+        let finalPrice=price-(price*sellOff/100);
+
+
+        document.getElementById('sellOff-price').innerHTML='قیمت تخفیفی : '+finalPrice;
+    }
+</script>

@@ -22,12 +22,12 @@
             <div class="form-group row">
                 <label asp-for="Img" class="control-label"></label>
                 <input asp-for="Img" class="form-control" hidden />
-                 <input type="file" name="imgFile" asp-for="Img" class="form-control" onchange="imgLoad(this)" />
+                 <input type="file" name="imgFile" asp-for="Img" class="form-control" onchange="imgLoad(this,'new-img')" />
 
                 @*new image*@
                  <div id="img-div" class="col-6 mt-1" hidden>
                      <label>تصویر جدید</label>
-                     <img id="img-box" src="" width="150" onload="imgDivShow()" />
+                     <img id="new-img" src="" width="150" onload="imgDivShow()" />
                  </div>
 
                 @*current Image*@
@@ -58,34 +58,19 @@
 <script type="text/javascript">
 
    //function imgLoad(input){
-   //     let _imgBox=document.getElementById("img-box");
-
    //     if(input.files && input.files[0]){
 
    //         let reader = new FileReader();
 
    //         reader.onload=function(e){
-   //             _imgBox.setAttribute('src',e.target.result);
+
+   //             $('#img-box').attr('src',e.target.result)
    //         }
 
    //         reader.readAsDataURL(input.files[0]);
+
    //     }
    //}
-
-   function imgLoad(input){
-        if(input.files && input.files[0]){
-
-            let reader = new FileReader();
-
-            reader.onload=function(e){
-
-                $('#img-box').attr('src',e.target.result)
-            }
-
-            reader.readAsDataURL(input.files[0]);
-
-        }
-   }
 
    function  imgDivShow(){
        let _imgDiv=document.getElementById("img-div");
