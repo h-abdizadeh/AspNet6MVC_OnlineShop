@@ -15,8 +15,10 @@ namespace OnlineShop.Controllers
 
         public async Task<IActionResult> Index()
         {
+
             var groups = 
                 await _context.Groups.Where(g => !g.NotShow).Take(5).ToListAsync();
+
 
             ViewBag.TopGroups = groups;
 

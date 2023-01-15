@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OnlineShop.Classes;
 using OnlineShop.Models;
 
 namespace OnlineShop.Areas.Admin.Controllers
@@ -58,10 +59,12 @@ namespace OnlineShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,GroupId,Name,Price,SellOff,Img,Des,Inventory,Seen,NotShow")] Product product)
+        public async Task<IActionResult> Create(Product product, IFormFile productImg)
         {
             if (ModelState.IsValid)
             {
+                product.Img = await new ImageSave().AddImage(productImg, "products");
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -156,14 +159,14 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return _context.Products.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }
