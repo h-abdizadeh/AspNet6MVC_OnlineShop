@@ -56,7 +56,8 @@
                 @Html.DisplayFor(modelItem => item.SellOff)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Img)
+               @* @Html.DisplayFor(modelItem => item.Img)*@
+               <img src="~/Image/Products/@item.Img" width="100" class="rounded-3 shadow-sm" > 
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Des)

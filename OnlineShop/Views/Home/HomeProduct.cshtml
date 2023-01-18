@@ -1,0 +1,49 @@
+﻿@model IEnumerable<OnlineShop.Models.Product>
+
+ <div class="col-12 mt-3">
+        <div class="col-md-10 col-12 m-auto rounded-4 bg-danger p-3 row  justify-content-center">
+            <div class="col-md-2 col-12 row">
+                <img src="~/image/site/amazing-typo.svg" class="col-md-12 col-4 m-auto" alt="شگفت انگیز">
+                <br>
+                <img src="~/image/site/box.png" class="col-md-12 col-4 m-auto" alt="بیشترین تخفیف">
+            </div>
+            <div class="col-md-10 col-12 rounded-4 p-0 overflow-hidden row">
+
+            @{
+                foreach (var item in Model)
+                {
+                    var price = item.Price;
+                    var sellOff = item.SellOff;
+
+                    var finalPrice = Math.Round((decimal)(price - price * sellOff / 100));
+                    
+                    <!-- product 1 -->
+                        <div class="col-md-3 col-12 special-product">
+                            <div class="main-box row ">
+
+                                <!-- img -->
+                                <div class="col-md-12 col-4 p-1">
+                                    <img src="Image/products/@item.Img"
+                                    class="w-100" alt="@item.Name">
+                                </div>
+
+                                <!-- text -->
+                                <div class="col-md-12 col-8">
+                                    <div>
+                                    <span class="sellOff">@item.SellOff %</span>
+                                 <a class="finalPrice">@finalPrice.ToString("n0") تومان</a>
+                                    </div>
+                                    <br>
+                                    <strike class="me-3 text-gray">@item.Price.ToString("n0")</strike>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                }
+            }
+
+            </div>
+        </div>
+    </div>

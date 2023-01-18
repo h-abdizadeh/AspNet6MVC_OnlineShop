@@ -25,8 +25,8 @@ namespace OnlineShop.Models
         public byte SellOff { get; set; } = 0;
 
         [Display(Name = "تصویر محصول")]
-        [Required(ErrorMessage = "ثبت تصویر محصول الزامیست")]
-        public string Img { get; set; }
+        //[Required(ErrorMessage = "ثبت تصویر محصول الزامیست")]
+        public string? Img { get; set; }
 
         [Display(Name = "درباره محصول", Prompt = "درباره محصول")]
         [MaxLength(512, ErrorMessage = "توضیحات نمی تواند بیش از 512 کاراکتر باشد")]
@@ -44,6 +44,6 @@ namespace OnlineShop.Models
 
 
         [ForeignKey("GroupId")]
-        public virtual Group Group { get; set; }
+        public virtual Group? Group { get; set; }
     }
 }

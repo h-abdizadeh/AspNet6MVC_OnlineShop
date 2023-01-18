@@ -61,7 +61,12 @@ namespace OnlineShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product, IFormFile productImg)
         {
-            if (ModelState.IsValid)
+            if (productImg==null)
+            {
+                ModelState.AddModelError("Img", "ثبت تصویر الزامی است");
+            }
+
+            if (ModelState.IsValid && productImg!=null)
             {
                 product.Img = await new ImageSave().AddImage(productImg, "products");
 
@@ -69,6 +74,7 @@ namespace OnlineShop.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Name", product.GroupId);
             return View(product);
         }
