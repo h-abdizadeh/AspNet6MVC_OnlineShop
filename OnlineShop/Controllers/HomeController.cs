@@ -33,6 +33,17 @@ namespace OnlineShop.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Product(int id)//product id
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product==null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(product);
+        }
 
         public IActionResult Ads()
         {

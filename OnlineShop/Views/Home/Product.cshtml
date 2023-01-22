@@ -1,0 +1,20 @@
+﻿@model OnlineShop.Models.Product
+
+
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="col-md-11 m-auto pt-5">
+<h1 class="mt-5 pt-3">@Model.Name</h1>
+<div class="col-md-4">
+    <img src="~/image/products/@Model.Img" class="w-100 rounded-3 shadow-sm" />
+
+</div>
+<div class="col-md-8 p-1">
+    <div class="col-12 border-1 rounded-3">
+    </div>
+</div>
+</div>
+
