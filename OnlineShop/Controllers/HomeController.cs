@@ -35,7 +35,7 @@ namespace OnlineShop.Controllers
 
         public async Task<IActionResult> Product(int id)//product id
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(p=>p.Group).SingleOrDefaultAsync(p=>p.Id==id);
 
             if (product==null)
             {

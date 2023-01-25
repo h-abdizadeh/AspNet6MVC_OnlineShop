@@ -6,15 +6,62 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<div class="col-md-11 m-auto pt-5">
-<h1 class="mt-5 pt-3">@Model.Name</h1>
-<div class="col-md-4">
+<div class="row col-md-11 m-auto pt-5">
+
+    @*img*@
+<div class="col-md-4 mt-5 pt-4">
     <img src="~/image/products/@Model.Img" class="w-100 rounded-3 shadow-sm" />
 
 </div>
-<div class="col-md-8 p-1">
-    <div class="col-12 border-1 rounded-3">
+
+@*dexcription*@
+<div class="row col-md-8 p-1 mt-5 pt-5">
+    <div class="col-md-7">
+        @*route*@
+        <div class="col-12 mb-2">
+            <a asp-controller="Home" asp-action="Index"><span class="fa fa-home"></span></a>
+            <span class="fa fa-caret-left"></span>
+
+            <a>محصولات</a>
+            <span class="fa fa-caret-left"></span>
+
+            <a>@Model.Group.Name</a>
+
+        </div>
+
+     <h1>@Model.Name</h1>
+
+         <p>
+                @Model.Des
+        </p>
+    <h6>گروه : @Model.Group.Name</h6>
+    <h6>موجودی : @Model.Inventory</h6>
+            @*<h6>@Html.DisplayNameFor(a=>a.Inventory) : @Model.Inventory</h6>*@
+
+    </div>
+
+    <div class="col-md-5 alert alert-light border-2 border-danger align-self-center">
+            @{
+                if (Model.SellOff > 0)
+                {
+                    var price = Model.Price;
+                    var sellOff = Model.SellOff;
+                    var finalPrice = price - (price * sellOff / 100);
+
+                                            <strike>@price.ToString("n0")</strike>
+                                            <span class="bg-success rounded-5 text-white p-1 small">% @sellOff</span>
+                                            <h4 class="text-success">@finalPrice.ToString("n0") تومان</h4>
+                }
+                else
+                {
+                                                     <h4>@Model.Price.ToString("n0") تومان</h4>
+                }
+            }
+            <hr />
+        <button class="btn btn-danger w-100 p-2">
+            <span class="fa fa-cart-plus"></span> اضافه به سبد خرید</button>
     </div>
 </div>
+
 </div>
 
