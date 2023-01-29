@@ -1,8 +1,7 @@
 ﻿@model OnlineShop.Models.Product
 
-
 @{
-    ViewData["Title"] = "Product";
+    ViewData["Title"] = "آنلاین شاپ | " + Model.Name;
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -14,18 +13,18 @@
 
 </div>
 
-@*dexcription*@
+    @*dexcription*@
 <div class="row col-md-8 p-1 mt-5 pt-5">
     <div class="col-md-7">
-        @*route*@
+            @*route*@
         <div class="col-12 mb-2">
             <a asp-controller="Home" asp-action="Index"><span class="fa fa-home"></span></a>
             <span class="fa fa-caret-left"></span>
 
-            <a>محصولات</a>
+            <a  asp-controller="Home" asp-action="Products" >محصولات</a>
             <span class="fa fa-caret-left"></span>
 
-            <a>@Model.Group.Name</a>
+            <a asp-controller="Home" asp-action="products" asp-route-id="@Model.GroupId" >@Model.Group.Name</a>
 
         </div>
 
@@ -48,20 +47,28 @@
                     var sellOff = Model.SellOff;
                     var finalPrice = price - (price * sellOff / 100);
 
-                                            <strike>@price.ToString("n0")</strike>
-                                            <span class="bg-success rounded-5 text-white p-1 small">% @sellOff</span>
-                                            <h4 class="text-success">@finalPrice.ToString("n0") تومان</h4>
+                                                            <strike>@price.ToString("n0")</strike>
+                                                            <span class="bg-success rounded-5 text-white p-1 small">% @sellOff</span>
+                                                            <h4 class="text-success">@finalPrice.ToString("n0") تومان</h4>
                 }
                 else
                 {
-                                                     <h4>@Model.Price.ToString("n0") تومان</h4>
+                                                                     <h4>@Model.Price.ToString("n0") تومان</h4>
                 }
             }
             <hr />
         <button class="btn btn-danger w-100 p-2">
             <span class="fa fa-cart-plus"></span> اضافه به سبد خرید</button>
     </div>
+
+
+        @*relative products*@
+<partial name="relativeproducts.cshtml" model="@ViewBag.RelativeProducts" />
+
+
 </div>
 
+
+   
 </div>
 

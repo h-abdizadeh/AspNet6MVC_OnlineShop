@@ -1,0 +1,52 @@
+﻿@model IEnumerable<OnlineShop.Models.Product>
+
+    <div class="col-12 mt-5">
+        <h4>محصولات مرتبط</h4>
+        <hr />
+        <div class="col-12 p-0 row">
+        @foreach (var item in Model)
+        {
+            var price = item.Price;
+            var sellOff = item.SellOff;
+
+            var finalPrice = Math.Round((decimal)(price - price * sellOff / 100));
+
+                             <!-- product 1 -->
+                             <div class="col-md-3 col-12 special-product">
+                                  <div class="main-box row ">
+
+                                      <!-- img -->
+                                      <div class="col-md-12 col-4 p-1">
+                                                    <a asp-controller="Home" asp-action="Product" asp-route-id="@item.Id">
+                                                        <img src="~/Image/products/@item.Img" class="w-100" alt="@item.Name">
+                                                    </a>
+                                                    </div>
+
+                                      <!-- text -->
+                                      <div class="col-md-12 col-8">
+                        @{
+                            if (item.SellOff > 0)
+                            {
+                                              <div>
+                                                 <span class="sellOff">@item.SellOff %</span>
+                                                 <a class="finalPrice">@finalPrice.ToString("n0") تومان</a>
+                                              </div>
+                                              <br>
+                                              <strike class="me-3 text-gray">@item.Price.ToString("n0")</strike>
+                            }
+                            else
+                            {
+                             <div>
+                                <a class="finalPrice">@item.Price.ToString("n0") تومان</a>
+                             </div>
+                            }
+                        }
+
+
+                                      </div>
+
+                                  </div>
+                             </div>
+        }
+        </div>
+    </div>

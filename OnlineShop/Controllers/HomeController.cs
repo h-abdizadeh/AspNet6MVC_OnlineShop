@@ -42,8 +42,38 @@ namespace OnlineShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            //relative products
+            ViewBag.RelativeProducts =
+                await _context.Products
+                        .Where(p => p.GroupId == product.GroupId && p.Id != product.Id)
+                        .Take(4)
+                        .ToListAsync();
+
             return View(product);
         }
+
+
+        public async Task<IActionResult> Products(int? id)//group id
+        {
+            ViewBag.ProductTitle = false;
+
+            if (id!=null)//products base group id
+            {
+                var groupProducts = await _context.Products
+                                            .Include(p => p.Group)
+                                            .Where(p => !p.NotShow && p.GroupId==id)
+                                            .ToListAsync();
+
+                ViewBag.ProductTitle = true;
+                return View(groupProducts);
+            }
+
+            //all products
+            var products = await _context.Products.Where(p=>!p.NotShow).ToListAsync();
+
+            return View(products);
+        }
+
 
         public IActionResult Ads()
         {
