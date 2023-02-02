@@ -45,5 +45,7 @@ namespace OnlineShop.Models
 
         [ForeignKey("GroupId")]
         public virtual Group? Group { get; set; }
+
+        public virtual ICollection<FactorDetail>? FactorDetails { get; set; }
     }
 }

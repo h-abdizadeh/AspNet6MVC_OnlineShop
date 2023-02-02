@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace OnlineShop.Models
 {
@@ -19,7 +20,8 @@ namespace OnlineShop.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<Factor> Factors { get; set; }
+        public DbSet<FactorDetail> FactorDetails { get; set; }
 
     }
 }

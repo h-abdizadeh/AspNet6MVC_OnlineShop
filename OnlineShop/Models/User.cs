@@ -29,5 +29,7 @@ namespace OnlineShop.Models
 
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }  
+
+        public virtual ICollection<Factor>? Factors { get; set; }
     }
 }
