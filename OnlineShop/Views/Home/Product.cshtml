@@ -57,8 +57,12 @@
                 }
             }
             <hr />
+
+            <form asp-controller="Shop" asp-action="AddShopping" method="post" >
+                <input asp-for="Id" hidden readonly/>
         <button class="btn btn-danger w-100 p-2">
             <span class="fa fa-cart-plus"></span> اضافه به سبد خرید</button>
+            </form>
     </div>
 
 

@@ -4,6 +4,7 @@ using Microsoft.VisualBasic;
 using OnlineShop.Migrations;
 using OnlineShop.Models;
 using OnlineShop.ViewModels;
+using OnlineShop.Classes;
 
 namespace OnlineShop.Controllers
 {
@@ -15,16 +16,33 @@ namespace OnlineShop.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> AddShopping(ShoppingViewModel shopping)
-        {
-            var user = await _context.Users.FindAsync(shopping.UserId);
 
-            if (user == null) return RedirectToAction("Index", "Home");
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<Guid> AddShopping(int id)//id --> productId
+        {
+
+
+            //var user = await _context.Users.FindAsync(shopping.UserId);
+
+            //change this after login
+            var user = await _context.Users.FirstAsync();
+
+            if (user == null) return Guid.Empty; //RedirectToAction("Index", "Home");<-- return action result
+
+            ShoppingViewModel shopping = new ShoppingViewModel()
+            {
+                ProductId = id,
+                UserId = user.Id,
+                Count = 1
+            };
+
 
             //user!=null
             var product = await _context.Products.FindAsync(shopping.ProductId);
 
-            if (product == null) return RedirectToAction("Index", "Home");
+            if (product == null) return Guid.Empty; //RedirectToAction("Index", "Home");<-- return action result
 
             //product!=null
             var price = product.Price;
@@ -66,8 +84,42 @@ namespace OnlineShop.Controllers
 
                 await _context.FactorDetails.AddAsync(newDetail);
                 //await _context.SaveChangesAsync();
+
+                return factor.Id;
             }
-            return View();
+            else //factor == null
+            {
+                Factor newFactor = new Factor()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = shopping.UserId,
+                    FactorNumber = new Random().Next(10000, 99999),
+                    IsPay = false,
+                    State = "در انتظار پرداخت",
+                    OpenDate = new Generation().PersianDateTime()
+                };
+
+                await _context.Factors.AddAsync(newFactor);
+
+                FactorDetail newDetail = new FactorDetail()
+                {
+                    Id = Guid.NewGuid(),
+                    FactorId = newFactor.Id,
+                    ProductId = product.Id,
+                    DetailCount = count,
+                    FinalPrice = (int)finaPrice * count,
+                };
+
+                await _context.FactorDetails.AddAsync(newDetail);
+                //await _context.SaveChangesAsync();
+
+
+                return newFactor.Id;
+            }
+
+
+
+            return Guid.Empty;
         }
     }
 }
