@@ -21,9 +21,27 @@ public class ProfileController : Controller
 
     public async Task<IActionResult> ShoppingCart(Guid id)//id --> factor id
     {
-        var factor = await _context.Factors.Include(f => f.FactorDetails).FirstOrDefaultAsync(f => f.Id == id && !f.IsPay);
+        var factor =await _context.Factors.Where(f => f.Id == id && !f.IsPay).Select(s => new Factor()
+        {
+            Id = s.Id,
+            OpenDate = s.OpenDate,
+            IsPay = s.IsPay,
+            State = s.State,
+            UserId = s.UserId,
+            FactorNumber = s.FactorNumber,
+            FactorDetails = s.FactorDetails.Select(d => new FactorDetail()
+            {
+                Id = d.Id,
+                FactorId = d.FactorId,
+                DetailCount = d.DetailCount,
+                ProductId = d.ProductId,
+                Des = s.Des,
+                FinalPrice = d.FinalPrice,
+                Product = d.Product
+            }).ToList()
+        }).FirstOrDefaultAsync();
 
-        if (factor!=null)
+        if (factor != null)
         {
             return View(factor);
         }

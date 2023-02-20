@@ -1,67 +1,71 @@
 ﻿@model OnlineShop.Models.Factor
 
 @{
-    ViewData["Title"] = "ShoppingCart";
+    ViewData["Title"] = "پروفایل کاربر | سبد خرید";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>ShoppingCart</h1>
+<h2><span class="fa fa-shopping-cart"></span> سبد خرید شما</h2>
 
 <div>
-    <h4>Factor</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FactorNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FactorNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OpenDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OpenDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CloseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CloseDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsPay)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsPay)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.State)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.State)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Des)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Des)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Mobile)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.FactorNumber)</th>
+                <td>@Html.DisplayFor(model => model.FactorNumber)</td>
+            </tr>
+             <tr>
+                <th>@Html.DisplayNameFor(model => model.OpenDate)</th>
+                <td>@Html.DisplayFor(model => model.OpenDate)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.State)</th>
+                <td>
+                    @{
+                        if (Model.IsPay)
+                        {
+                                        <a class="bg-success rounded-5 text-white p-1 text-decoration-none">@Model.State</a>
+                        }
+                        else
+                        {
+                                        <a class="bg-danger rounded-5 text-white p-1 text-decoration-none">@Model.State</a>
+                        }
+                    }
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+    <div class="mt-5">
+        @foreach (var item in Model.FactorDetails)
+        {
+                <div class="col-md-10 col-12 row">
+                    <div class="col-md-1 col-2 p-0">
+                        <img src="~/image/products/@item.Product.Img" class="w-100"/>
+                  </div>
+                  <div class="col-10">
+                      <h4>@item.Product.Name</h4>
+                      <div>
+                       <a class="m-1 text-decoration-none">قیمت پایه: @item.Product.Price.ToString("n0")</a>
+                            <a class="m-1 text-decoration-none">تعداد: @item.DetailCount</a>
+                            <a class="m-1 text-decoration-none">قیمت نهایی: @item.FinalPrice.ToString("n0")</a>
+                      </div>
+                      <hr class="w-75">
+                  </div>
+                </div>
+        }
+
+        <h3>مجموع : @Model.FactorDetails.Sum(f=>f.FinalPrice).ToString("n0")</h3>
+        <a class="btn btn-danger"> ادامه فرایند خرید 
+            <span class="fa fa-long-arrow-left"></span>
+        </a>
+
+        <a asp-action="Index" class="text-decoration-none me-5">بازگشت</a>
+    </div>
+
+
 </div>
