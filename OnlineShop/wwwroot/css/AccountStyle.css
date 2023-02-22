@@ -1,0 +1,74 @@
+﻿@font-face {
+    font-family: 'Yekan';
+    src: url('../fonts/Yekan.ttf') format('truetype');
+}
+
+body {
+    background-color: #ef4056;
+    margin: auto;
+    direction: rtl;
+    font-family: 'Yekan', Tahoma;
+}
+
+main {
+    text-align: center;
+    padding-top: 128px;
+}
+
+h1, p {
+    text-align: right;
+}
+
+img {
+    height: 42px;
+}
+
+.color-700 {
+    color: #424750;
+}
+
+.color-red {
+    color: #ef4056;
+}
+
+.font-small {
+    font-size: 9.5pt;
+}
+
+.font-medium {
+    font-size: 16pt;
+}
+
+.font-weight {
+    font-weight: normal !important;
+}
+
+.login-div {
+    margin: auto;
+    border: 1px solid #e0e0e2;
+    border-radius: 5px;
+    padding: 25px;
+    width: 340px;
+}
+
+form input {
+    border: 1px solid #ef4056;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 14pt;
+    width: 100%;
+    outline: none;
+}
+
+form button {
+    background-color: #ef4056;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    border: none;
+    font-size: 14pt;
+    margin-top: 32px;
+    font-family: 'Yekan';
+}

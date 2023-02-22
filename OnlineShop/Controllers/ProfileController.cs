@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
 using OnlineShop.Models;
 
 namespace OnlineShop.Controllers;
 
+[Authorize]
 public class ProfileController : Controller
 {
     private readonly DatabaseContext _context;

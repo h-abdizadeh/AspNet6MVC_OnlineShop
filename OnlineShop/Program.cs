@@ -7,6 +7,14 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<DatabaseContext, DatabaseContext>();
 
+const string scheme = "onlineShop";
+
+builder.Services.AddAuthentication(scheme).AddCookie(scheme, option =>
+{
+    option.LoginPath = "/Account/Login";
+    option.AccessDeniedPath = "/Account/Login";
+    option.ExpireTimeSpan = TimeSpan.FromDays(30);//not for host version
+});
 
 var app = builder.Build();
 app.UseHttpsRedirection();
@@ -15,6 +23,7 @@ app.UseRouting();
 
 app.UseStaticFiles();
 
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {

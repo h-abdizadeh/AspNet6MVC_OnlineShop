@@ -1,0 +1,34 @@
+﻿@model OnlineShop.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "آنلاین شاپ | ثبت نام";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+            <main >
+               <div class="login-div">
+                    <!-- logo -->
+                    <div>
+                        <img src="~/Image/site/logo.svg">
+                    </div>
+                    <!-- login -->
+                    <div>
+                        <h1 class="font-medium font-weight">ثبت نام</h1>
+                        <p class="color-700">سلام!</p>
+                       
+                        <form asp-controller="Account" asp-action="Register">
+                            <input type="text" asp-for="Mobile">
+                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                            <input type="text" asp-for="Password">
+                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                            <input type="text" asp-for="ConfirmPassword">
+                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                            <button>ثبت نام</button>
+                        </form>
+                        <p class="font-small color-700">ورود شما به معنای پذیرش شرایط <a href="https://digikala.com">دیجی‌کالا</a> و قوانین حریم‌ خصوصی است</p>
+
+                        <a asp-controller="account" asp-action="login">حساب کاربری دارم</a>
+                    </div>
+                </div>
+            </main>
+

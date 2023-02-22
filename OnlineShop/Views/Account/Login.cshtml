@@ -1,0 +1,36 @@
+﻿@model OnlineShop.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "آنلاین شاپ | ورود";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+            <main >
+               <div class="login-div">
+                    <!-- logo -->
+                    <div>
+                        <img src="~/Image/site/logo.svg">
+                    </div>
+                    <!-- login -->
+                    <div>
+                        <h1 class="font-medium font-weight">ورود</h1>
+                        <p class="color-700">سلام!</p>
+
+                        <form asp-controller="Account" asp-action="Login">
+                            <input type="text" asp-for="Mobile">
+                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                            <input type="text" asp-for="Password">
+                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                           
+                            <button>ورود</button>
+                        </form>
+                        <p class="font-small color-700">ورود شما به معنای پذیرش شرایط <a href="https://digikala.com">دیجی‌کالا</a> و قوانین حریم‌ خصوصی است</p>
+
+                       <p>
+                           در صورتی که حساب کاربری ندارید روی لینک <a asp-controller="account" asp-action="register">ثبت نام</a> کلیک کنید
+                       </p>
+
+                    </div>
+                </div>
+            </main>
+
