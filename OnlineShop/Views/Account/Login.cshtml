@@ -18,9 +18,9 @@
 
                         <form asp-controller="Account" asp-action="Login">
                             <input type="text" asp-for="Mobile">
-                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
-                            <input type="text" asp-for="Password">
-                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                           <span asp-validation-for="Mobile" class="text-danger font-small"></span>
+                            <input type="password" asp-for="Password">
+                            <span asp-validation-for="Password" class="text-danger font-small"></span>
                            
                             <button>ورود</button>
                         </form>

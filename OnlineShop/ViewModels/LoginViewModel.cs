@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShop.ViewModels
 {
@@ -12,8 +13,9 @@ namespace OnlineShop.ViewModels
 
         [Display(Prompt = "رمز عبور")]
         [Required(ErrorMessage = "ثبت رمز عبور الزامیست")]
-        [MinLength(8, ErrorMessage = "رمز عبور حداقل 8 کاراکتر")]
+        [MinLength(4, ErrorMessage = "رمز عبور حداقل 8 کاراکتر")]
         [MaxLength(15, ErrorMessage = "رمز عبور حداکثر 15 کاراکتر")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
     }
