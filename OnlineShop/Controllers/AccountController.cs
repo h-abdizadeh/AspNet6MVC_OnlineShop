@@ -20,6 +20,12 @@ public class AccountController : Controller
 
     public IActionResult Register()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("index", "profile");
+            //return Redirect("~/profile/index");
+        }
+
         return View();
     }
 
@@ -27,11 +33,51 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel register)
     {
-        return View();
+        if (ModelState.IsValid)
+        {
+            var user =
+                await _context.Users
+                .FirstOrDefaultAsync(u => u.Mobile == register.Mobile);
+
+            if (user!=null)
+            {
+                ModelState.AddModelError("Mobile", "این شماره تماس پیش از این ثبت نام نموده است");
+
+                return View(register);
+            }
+
+            var hashPass = Security.GetHash(register.Password);
+
+            User newUser = new User()
+            {
+                Id=Guid.NewGuid(),
+                Mobile = register.Mobile,
+                Password = hashPass,
+                RoleId = 
+                _context.Roles.FirstOrDefault(r => r.RoleName == "user").Id
+            };
+
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
+
+
+            ViewBag.RegisterResult = true;
+            return RedirectToAction(nameof(Login));
+
+        }
+
+
+        return View(register);
     }
 
     public IActionResult Login()
     {
+        if (User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("index", "profile");
+            //return Redirect("~/profile/index");
+        }
+
         return View();
     }
 
@@ -51,7 +97,6 @@ public class AccountController : Controller
             if (user!=null)
             {
                 //login to panel Admin or User
-
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
@@ -61,7 +106,6 @@ public class AccountController : Controller
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var principale=new ClaimsPrincipal(identity);
-
                 var properties = new AuthenticationProperties()
                 {
                     IsPersistent = true //remember me //مرا به خاطر بسپار

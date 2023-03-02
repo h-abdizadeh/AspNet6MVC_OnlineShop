@@ -7,6 +7,22 @@
 
             <main >
                <div class="login-div">
+
+        @{
+            if (ViewBag.RegisterResult != null)
+            {
+                if (ViewBag.RegisterResult == true)
+                {
+                                <div class="alert alert-success">
+                                ثبت نام شما با موفقیت انجام شد
+                                <br/>
+                                میتوانید ورود کنید
+                                </div>
+                }
+            }
+        }
+
+
                     <!-- logo -->
                     <div>
                         <img src="~/Image/site/logo.svg">
@@ -21,7 +37,7 @@
                            <span asp-validation-for="Mobile" class="text-danger font-small"></span>
                             <input type="password" asp-for="Password">
                             <span asp-validation-for="Password" class="text-danger font-small"></span>
-                           
+
                             <button>ورود</button>
                         </form>
                         <p class="font-small color-700">ورود شما به معنای پذیرش شرایط <a href="https://digikala.com">دیجی‌کالا</a> و قوانین حریم‌ خصوصی است</p>

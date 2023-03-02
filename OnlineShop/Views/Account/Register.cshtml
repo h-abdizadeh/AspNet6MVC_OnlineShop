@@ -18,11 +18,11 @@
                        
                         <form asp-controller="Account" asp-action="Register">
                             <input type="text" asp-for="Mobile">
-                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
-                            <input type="text" asp-for="Password">
-                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
-                            <input type="text" asp-for="ConfirmPassword">
-                            <p class="color-red font-small">لطفا این قسمت را خالی نگذارید</p>
+                            <span asp-validation-for="Mobile" class="text-danger font-small"></span>
+                            <input type="password" asp-for="Password">
+                           <span asp-validation-for="Password" class="text-danger font-small"></span>
+                            <input type="password" asp-for="ConfirmPassword">
+                            <span asp-validation-for="ConfirmPassword" class="text-danger font-small"></span>
                             <button>ثبت نام</button>
                         </form>
                         <p class="font-small color-700">ورود شما به معنای پذیرش شرایط <a href="https://digikala.com">دیجی‌کالا</a> و قوانین حریم‌ خصوصی است</p>

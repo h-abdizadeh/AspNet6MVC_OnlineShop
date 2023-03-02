@@ -8,7 +8,24 @@
             </div>
 
             <div id="register-box" class="d-inline float-start ps-2  mt-2">
-                <button class="btn-login"><span class="fas fa-sign-in-alt"></span> ورود | ثبت نام</button>
+
+            @{
+                if (User.Identity.IsAuthenticated)
+                {
+                  <button class="btn-login">
+                      <span class="fas fa-user"></span>
+                                <a asp-controller="Profile" asp-action="index" class=" text-black text-decoration-none">پروفایل</a> 
+                    </button>
+                }
+                else
+                {
+                             <button class="btn-login">
+                     <span class="fas fa-sign-in-alt"></span>
+                          <a asp-controller="Account" asp-action="login" class=" text-black text-decoration-none">ورود | ثبت نام</a> 
+                     </button>
+                }
+            }
+
                 | <a class="a-cart text-black"><span class="fa fas fa-shopping-cart"></span></a>
             </div>
 
