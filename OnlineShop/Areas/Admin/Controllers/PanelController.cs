@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Classes;
 
-namespace OnlineShop.Areas.Admin.Controllers
+namespace OnlineShop.Areas.Admin.Controllers;
+
+[Area("Admin")]
+[Authorize]
+[RoleAttribute("admin")]
+public class PanelController : Controller
 {
-    [Area("Admin")]
-    public class PanelController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

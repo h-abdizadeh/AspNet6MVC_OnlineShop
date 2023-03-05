@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title</title>
+
+    <link href="~/css/AdminStyle.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <header class="bg-red">
+        <h1>پروفایل کاربر</h1>
+    </header>
+
+    <div class="side-bar bg-red col-3 float-end">
+        <a><span class="fa fa-user"></span> مشخصات فردی</a>
+
+        <a asp-controller="profile" asp-action="shoppingCart">
+            <span class="fa fa-shopping-cart"></span> سبد خرید</a>
+
+        <a><span class="fa fa-shield"></span> تغییر رمز عبور</a>
+
+        <a asp-area="" asp-controller="Account" asp-action="SignOutUser">
+            <span class="fa fa-sign-out"></span> خروج</a>
+
+    </div>
+
+    <div class="col-9 float-start p-3 mt-5 pt-5">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/mainscript.js"></script>
+
+</body>
+</html>
