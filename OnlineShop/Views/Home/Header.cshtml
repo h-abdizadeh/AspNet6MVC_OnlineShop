@@ -26,7 +26,14 @@
                 }
             }
 
-                | <a class="a-cart text-black"><span class="fa fas fa-shopping-cart"></span></a>
+                | 
+
+                @if (ViewBag.CartCount>0)
+                {
+                    <span class="bg-danger rounded-5 position-absolute text-white small pe-1 ps-1">@ViewBag.CartCount</span>
+                }
+              
+                <a asp-controller="profile" asp-action="shoppingcart" class="a-cart text-black"><span class="fa fas fa-shopping-cart fa-lg"></span></a>
             </div>
 
             <!-- menu -->

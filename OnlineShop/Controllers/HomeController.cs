@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Models;
+using X.PagedList;
 
 namespace OnlineShop.Controllers
 {
@@ -30,6 +31,9 @@ namespace OnlineShop.Controllers
 
             ViewBag.TopGroups = groups;
 
+            ViewBag.CartCount = CartCount();
+
+
             return View();
         }
 
@@ -53,7 +57,7 @@ namespace OnlineShop.Controllers
         }
 
 
-        public async Task<IActionResult> Products(int? id)//group id
+        public async Task<IActionResult> Products(int? id,int page=1)//group id
         {
             ViewBag.ProductTitle = false;
 
@@ -71,7 +75,9 @@ namespace OnlineShop.Controllers
             //all products
             var products = await _context.Products.Where(p=>!p.NotShow).ToListAsync();
 
-            return View(products);
+            var produtsPage = await products.ToPagedListAsync(page, 2);
+
+            return View(produtsPage);
         }
 
 
@@ -80,6 +86,29 @@ namespace OnlineShop.Controllers
             return PartialView();
         }
 
+
+        private int CartCount()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userName=User.Identity.Name;
+                var userId = 
+                    _context.Users
+                    .FirstOrDefault(u => u.Mobile == userName).Id;
+
+                var factor = 
+                    _context.Factors
+                    .Include(f => f.FactorDetails)
+                    .FirstOrDefault(f => f.UserId == userId && !f.IsPay);
+
+                if (factor!=null)
+                {
+                    return factor.FactorDetails.Count();
+                }
+            }
+
+            return 0;
+        }
 
     }
 }

@@ -1,4 +1,7 @@
-﻿@model IEnumerable<OnlineShop.Models.Product>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using X.PagedList
+@model IPagedList<OnlineShop.Models.Product>
 
 @{
     ViewData["Title"] = "آنلاین شاپ | صفحه محصولات";
@@ -9,10 +12,10 @@
     <div class="col-md-9 col-12 m-auto row pt-5">
 
         @{
-            if (ViewBag.ProductTitle==true)
+            if (ViewBag.ProductTitle == true)
             {
-                <h5 class="pt-3">@Model.First().Group.Name</h5>
-                <hr />
+                        <h5 class="pt-3">@Model.First().Group.Name</h5>
+                        <hr />
             }
 
             foreach (var item in Model)
@@ -22,44 +25,55 @@
 
                 var finalPrice = Math.Round((decimal)(price - price * sellOff / 100));
 
-                                     <!-- product 1 -->
-                                     <div class="col-md-3 col-12 special-product shadow-sm">
-                                          <div class="main-box row ">
+                                             <!-- product 1 -->
+                                             <div class="col-md-3 col-12 special-product shadow-sm">
+                                                  <div class="main-box row ">
 
-                                              <!-- img -->
-                                              <div class="col-md-12 col-4 p-3">
-                                                            <a asp-controller="Home" asp-action="Product" asp-route-id="@item.Id">
-                                                                <img src="~/Image/products/@item.Img" class="w-100" alt="@item.Name">
-                                                            </a>
-                                                            </div>
+                                                      <!-- img -->
+                                                      <div class="col-md-12 col-4 p-3">
+                                                                    <a asp-controller="Home" asp-action="Product" asp-route-id="@item.Id">
+                                                                        <img src="~/Image/products/@item.Img" class="w-100" alt="@item.Name">
+                                                                    </a>
+                                                                    </div>
 
-                                              <!-- text -->
-                                              <div class="col-md-12 col-8">
+                                                      <!-- text -->
+                                                      <div class="col-md-12 col-8">
                             @{
                                 if (item.SellOff > 0)
                                 {
-                                                              <div>
-                                                                 <span class="sellOff">@item.SellOff %</span>
-                                                                 <a class="finalPrice">@finalPrice.ToString("n0") تومان</a>
-                                                              </div>
-                                                              <br>
-                                                              <strike class="me-3 text-gray">@item.Price.ToString("n0")</strike>
+                                                                              <div>
+                                                                                 <span class="sellOff">@item.SellOff %</span>
+                                                                                 <a class="finalPrice">@finalPrice.ToString("n0") تومان</a>
+                                                                              </div>
+                                                                              <br>
+                                                                              <strike class="me-3 text-gray">@item.Price.ToString("n0")</strike>
                                 }
                                 else
                                 {
-                                             <div>
-                                                <a class="finalPrice">@item.Price.ToString("n0") تومان</a>
-                                             </div>
+                                                             <div>
+                                                                <a class="finalPrice">@item.Price.ToString("n0") تومان</a>
+                                                             </div>
                                 }
                             }
 
 
-                                              </div>
+                                                      </div>
 
-                                          </div>
-                                     </div>
+                                                  </div>
+                                             </div>
             }
+
+
         }
+
+        @Html.PagedListPager(Model,
+            page=> Url.Action("products","home",new {page=page}),
+                        new PagedListRenderOptions {
+                            LiElementClasses = new string[] { "page-item" },
+                            PageClasses = new string[] { "page-link" }
+                        })
+
+
     </div>
 </div>
 
