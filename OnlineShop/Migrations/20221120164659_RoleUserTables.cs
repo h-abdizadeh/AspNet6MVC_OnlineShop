@@ -79,7 +79,7 @@ namespace OnlineShop.Migrations
                 "09112223344",
                 Classes.Security.GetHash("8888"),
                 1111
-            };
+            }; 
 
             migrationBuilder.InsertData(
                 table: "Users",
