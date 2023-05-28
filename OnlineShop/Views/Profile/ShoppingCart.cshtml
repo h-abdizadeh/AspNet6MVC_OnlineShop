@@ -60,10 +60,12 @@
         }
 
         <h3>مجموع : @Model.FactorDetails.Sum(f=>f.FinalPrice).ToString("n0")</h3>
-        <a class="btn btn-danger"> ادامه فرایند خرید 
+        @*<a class="btn btn-danger"> ادامه فرایند خرید 
             <span class="fa fa-long-arrow-left"></span>
-        </a>
-
+        </a>*@
+        <form asp-controller="Payment" asp-action="Pay" method="post">
+            <input type="submit" class="btn btn-info" value="پرداخت آنلاین" />
+        </form>
         <a asp-action="Index" class="text-decoration-none me-5">بازگشت</a>
     </div>
 
