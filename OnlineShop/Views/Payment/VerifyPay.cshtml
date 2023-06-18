@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "VerifyPay";
+    Layout = "~/Views/Shared/_profileLayout.cshtml";
+}
+
+@{
+    if(ViewBag.Result=="error"){
+        <h1 class="text-danger">پرداخت ناموفق</h1>
+
+    }
+    else{
+        <h1 class="text-success">پرداخت موفق</h1>
+
+    }
+
+    <div>
+    <a asp-controller="profile" asp-action="shoppingcart" class="btn btn-info">پیگیری سفارش</a>
+</div>
+}
+
+

@@ -1,22 +1,11 @@
 ﻿using Dto.Payment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OnlineShop.Models;
-using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using ZarinPal.Class;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Numerics;
 
 namespace OnlineShop.Controllers;
 
@@ -39,16 +28,7 @@ public class PaymentController : Controller
         _transactions = expose.CreateTransactions();
     }
 
-    //int amount;
-    //string merchantId = "YOUR-ZARINPAL-MERCHANT-CODE";//"cfa83c81-99b0-4893-9465-2c3fcd323455";//"YOUR-ZARINPAL-MERCHANT-CODE";
-    //string[] metadata = { "", "" };
-    string merchantId = "YOUR-ZARINPAL-MERCHANT-CODE";
-    string amount = "1100";
-    string description = "خرید تستی ";
-    string callBackUrl = "https://localhost:44301/payment/VerifyPay";
-    string authority;
 
-  
     public async Task<IActionResult> Pay()
     {
         //var payment = new Payment();
@@ -59,7 +39,7 @@ public class PaymentController : Controller
         if (user == null) return RedirectToAction("index", "home");
 
         var factor =
-        _context.Factors.Include(f=>f.FactorDetails).FirstOrDefault(f => f.UserId == user.Id && !f.IsPay);
+        _context.Factors.Include(f => f.FactorDetails).FirstOrDefault(f => f.UserId == user.Id && !f.IsPay);
 
 
         if (factor == null) return RedirectToAction("index", "home");
@@ -68,69 +48,81 @@ public class PaymentController : Controller
         var result = await _payment.Request(new DtoRequest()
         {
             MerchantId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-            Amount = factor.FactorDetails.Sum(f=>f.FinalPrice),
+            Amount = factor.FactorDetails.Sum(f => f.FinalPrice),
             Description = "خرید تستی ",
-            CallbackUrl = 
-            "https://localhost:7003/payment/VerifyPay?factorId="+factor,
+            CallbackUrl =
+            "https://localhost:7003/payment/VerifyPay?factorId=" + factor.Id,
             Email = "",
             Mobile = ""
-        }, Payment.Mode.sandbox);
+        }, Payment.Mode.sandbox);//final project use Mode.zarinpal
 
         if (result.Status == 100)
         {
+            //return Redirect("https://www.zarinpal.com/pg/StartPay/" + result.Authority);
             return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + result.Authority);
         }
 
         return View("Error");
     }
 
-    public IActionResult VerifyPay(Guid factorId)
+    //[HttpPost]
+    //[ValidateAntiForgeryToken]
+    public async Task<IActionResult> VerifyPay(Guid factorId, string status, string authority)
     {
+        if (status.ToLower() == "ok")
+        {
+            ViewBag.Result = "ok";
+
+            var factor =
+                _context.Factors.Include(f => f.FactorDetails)
+                                .FirstOrDefault(f => f.Id == factorId);
+
+
+            if (factor == null)
+                return RedirectToAction("shoppingcart", "profile");
+
+            var verify = await _payment.Verification(new DtoVerification()
+            {
+                MerchantId = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+                Amount = factor.FactorDetails.Sum(f => f.FinalPrice),
+                Authority = authority
+            }, Payment.Mode.sandbox);
+
+
+            //if (verify.Status==100)
+            //{
+            //    factor.IsPay = true;
+            //}
+            //else
+            //{
+            //    factor.IsPay = false;
+            //}
+
+            factor.IsPay = verify.Status == 100;
+
+            if (factor.IsPay)
+            {
+                foreach (var item in factor.FactorDetails)
+                {
+                    var product = _context.Products.Find(item.ProductId);
+                    product.Inventory -= (uint)item.DetailCount;
+                }
+
+                factor.Des = verify.RefId.ToString();
+                await _context.SaveChangesAsync();
+            }
+
+        }
+        else
+        {
+            ViewBag.Result = "error";
+        }
+
         return View();
     }
+
+    //public IActionResult VerifyPay()
+    //{
+    //    return View();
+    //}
 }
-
-//public class ZarinPalRequestResponseModel
-//{
-//    public int Status { get; set; }
-//    public string Authority { get; set; }
-//}
-
-//public class URLs
-//{
-//    public const String gateWayUrl = "https://sandbox.zarinpal.com/pg/StartPay/";
-//    public const String requestUrl = "https://sandbox.zarinpal.com/pg/v4/payment/request.json";
-//    public const String verifyUrl = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json";
-
-
-//}
-
-//public class RequestParameters
-//{
-//    public string merchant_id { get; set; }
-
-//    public string amount { get; set; }
-//    public string description { get; set; }
-//    public string callback_url { get; set; }
-
-//    public string[]? metadata { get; set; }
-
-//    public RequestParameters(string merchant_id, string amount, string description, string callback_url, string? mobile, string? email)
-//    {
-//        this.merchant_id = merchant_id;
-//        this.amount = amount;
-//        this.description = description;
-//        this.callback_url = callback_url;
-//        this.metadata = new string[2];
-//        if (mobile != null)
-//        {
-//            this.metadata[0] = mobile;
-//        }
-//        if (email != null)
-//        {
-//            this.metadata[1] = email;
-//        }
-
-
-//    }
-//}
